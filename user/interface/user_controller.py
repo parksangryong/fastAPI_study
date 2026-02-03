@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
+from common.exception.exceptions import BusinessException
 
 router = APIRouter(prefix="/users")
 
@@ -17,4 +18,4 @@ class GetUserResponse(BaseModel):
 
 @router.get("/{user_id}")
 def get_user(user_id: int) -> GetUserResponse:
-    return {"user_id": user_id}
+    raise BusinessException("USER-001")
