@@ -8,4 +8,8 @@ class IUserRepository(metaclass=ABCMeta):
 
     @abstractmethod
     def find_by_email(self, email: str) -> User:
+        """
+        이메일로 유저를 검색한다.
+        검색된 유저가 없으면 422 에러를 발생시킨다.
+        """
         raise NotImplementedError
