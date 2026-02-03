@@ -4,7 +4,8 @@ from user.domain.repository.user_repo import IUserRepository
 from user.infra.repository.user_repo import UserRepository
 from user.domain.user import User, Profile
 from utils.crypto import Crypto
-from fastapi import HTTPException
+from common.exceptions import BusinessException
+
 class UserService:
     def __init__(self):
         self.user_repo : IUserRepository = UserRepository()
@@ -16,12 +17,12 @@ class UserService:
 
         try:
             _user = self.user_repo.find_by_email(email)
-        except HTTPException as e:
-            if e.status_code != 422:
+        except BusinessException as e:
+            if e.code_name != "USER_NOT_FOUND":
                 raise e
         
         if _user:
-            raise HTTPException(status_code=422)
+            raise BusinessException("USER_ALREADY_EXISTS")
 
         now = datetime.now()
         user : User = User(
